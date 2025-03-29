@@ -1,3 +1,9 @@
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(11))
+    }
+}
+
 plugins {
     id("application")
     id("java")
@@ -37,6 +43,11 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
+}
+
+tasks.register<Exec>("buildDocker") {
+    dependsOn("shadowJar")
+    commandLine("docker", "build", "-t", "mantis-agent:latest", ".")
 }
 
 tasks.test {
